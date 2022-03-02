@@ -7,16 +7,6 @@
 </a>
 
 <!-- Divider -->
-<hr class="sidebar-divider my-0">
-
-<!-- Nav Item - Dashboard -->
-<li class="nav-item">
-    <a class="nav-link" href="index.html">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
-</li>
-
-<!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -26,28 +16,34 @@
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-        aria-expanded="true" aria-controls="collapseTwo">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        aria-expanded="false" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-cog"></i>
         <span>Customer</span>
     </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Components</h6>
-            <a class="collapse-item" href="customer-list.php">List</a>
+            <a class="collapse-item" href="index.php">List</a>
             <a class="collapse-item" href="add-customer.php">Add New</a>
-            <a class="collapse-item" href="balance-transfer.php">Balance Transfer</a>
         </div>
     </div>
 </li>
 
 <!-- Divider -->
-<hr class="sidebar-divider d-none d-md-block">
+<hr class="sidebar-divider my-0">
+
+<!-- Nav Item - Dashboard -->
+<li class="nav-item">
+    <a class="nav-link" href="balance-transfer.php">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Balance Transfer</span></a>
+</li>
 
 <!-- Sidebar Toggler (Sidebar) -->
-<div class="text-center d-none d-md-inline">
+<!-- <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
-</div>
+</div> -->
 
 </ul>
 <!-- End of Sidebar -->

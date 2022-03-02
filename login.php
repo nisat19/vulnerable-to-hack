@@ -10,9 +10,11 @@ if (isset($_POST['submit'])) {
         $validate = $conn->query("SELECT id, email, password, name, mobile, address FROM users WHERE email='{$email}' AND password='{$password}'");
         $user = $validate->fetch(PDO::FETCH_ASSOC);
         if ($user) {
+            $message = 'Login successfully';
             $_SESSION['auth'] = true;
             $_SESSION['authData'] = $user;
-            redirect('customer-list.php');
+            header("Location: index.php");
+            exit();
         } else {
             $message = 'Wrong Email or Password!!';
         }

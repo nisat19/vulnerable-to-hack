@@ -5,7 +5,7 @@ require_once 'functions.php';
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=testapp", $username, $password);

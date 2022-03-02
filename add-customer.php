@@ -1,7 +1,7 @@
 <?php
 require_once 'inc/config.php';
-if (isset($_SESSION['auth']) && $_SESSION['auth']) {
-   // header('Location: login.php');
+if (isset($_SESSION['auth']) && !$_SESSION['auth']) {
+   header('Location: login.php');
 }
 
 $message = "";
@@ -14,10 +14,10 @@ if (isset($_POST['submit'])) {
         if($q){
             $message = 'Registered successfully';
         } else {
-            $message = 'Failed to register';
+            $message = 'Failed to register data';
         }
     } catch(Exception $e) {
-        $message = 'Failed to register';
+        $message = 'Failed to register ' . $e;
     }
 }
 ?>
