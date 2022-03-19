@@ -17,6 +17,9 @@ if (isset($_POST['submit'])) {
             $_SESSION['language'] = $_POST['en'];
             $bytes = bin2hex(random_bytes(20));
             setcookie("token", $bytes, time() + (86400 * 30), "/");
+            setcookie("email", $_POST['email'], time() + (86400 * 30), "/");
+            setcookie("language", "en", time() + (86400 * 30), "/");
+            setcookie("server_name", $_SERVER['SERVER_NAME'], time() + (86400 * 30), "/");
             header("Location: index.php");
             exit();
         } else {
