@@ -13,6 +13,8 @@ if (isset($_POST['submit'])) {
             $message = 'Login successfully';
             $_SESSION['auth'] = true;
             $_SESSION['authData'] = $user;
+            $_SESSION['email'] = $_POST['email'];
+            $_SESSION['language'] = $_POST['en'];
             $bytes = bin2hex(random_bytes(20));
             setcookie("token", $bytes, time() + (86400 * 30), "/");
             header("Location: index.php");
