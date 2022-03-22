@@ -1,5 +1,10 @@
 <?php
-require_once 'inc/config.php';
+require_once '../inc/config.php';
+if (!$_SESSION['auth']) {
+   header('Location: login.php');
+}
+header("Content-Security-Policy: default-src 'self'");
+
 ?>
 
 <!DOCTYPE html>
@@ -16,13 +21,13 @@ require_once 'inc/config.php';
     <title>A/C Management System</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -31,7 +36,7 @@ require_once 'inc/config.php';
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <?php include_once('common/sidebar.php'); ?>
+        <?php include_once('../common/sidebar.php'); ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -39,13 +44,13 @@ require_once 'inc/config.php';
             <!-- Main Content -->
             <div id="content">
 
-                 <?php include_once('common/header.php'); ?>
+                 <?php include_once('../common/header.php'); ?>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Custom List</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Customer List</h6>
                             </div>
                             <div class="card-body">
                                 <?php 
@@ -53,13 +58,13 @@ require_once 'inc/config.php';
                                         ?>
                                         <!-- <div>Search Results - </?php// echo $_GET['search']; ?></div> -->
 
-                                        <div>Search Results - <?php echo $_GET['search']; ?></div>
+                                        <div>Search Results - <?php echo htmlentities($_GET['search']); ?></div>
                                         <br/>
                                         
                                         <?php
                                     }
                                     if(isset($_GET['search'])){
-                                        $data = $conn->query("SELECT * FROM customers where name like '%".$_GET['search']."%'")->fetchAll();
+                                        $data = $conn->query("SELECT * FROM customers where name like '%".htmlentities($_GET['search'])."%'")->fetchAll();
                                     } else {
                                         $data = $conn->query('SELECT * FROM customers')->fetchAll();
                                     }
@@ -84,6 +89,7 @@ require_once 'inc/config.php';
                                         </tfoot>
                                         <tbody>
                                             <?php
+                                            if(count($data) > 0){
                                                 foreach($data as $item) {
                                             ?>
                                             <tr>
@@ -93,6 +99,12 @@ require_once 'inc/config.php';
                                                 <td><?=$item['balance']?></td>
                                             </tr>
                                             <?php 
+                                                } } else {
+                                                    ?>
+                                                        <tr>
+                                                            <td colspan="4">No data available</td>
+                                                        </tr>
+                                                    <?php
                                                 }
                                             ?>
                                         </tbody>

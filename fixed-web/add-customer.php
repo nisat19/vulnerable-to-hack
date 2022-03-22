@@ -1,15 +1,22 @@
 <?php
-require_once 'inc/config.php';
-if (isset($_SESSION['auth']) && !$_SESSION['auth']) {
+require_once '../inc/config.php';
+header("Content-Security-Policy: default-src 'self'");
+
+if (!$_SESSION['auth']) {
    header('Location: login.php');
 }
 
 $message = "";
 
 if (isset($_POST['submit'])) {
+
+    $name = htmlentities($_POST['name']);
+    $email = htmlentities($_POST['email']);
+    $password = htmlentities($_POST['password']);
+
     try {
         $q = $conn->query("INSERT INTO customers (`name`, `email`, `password`, `balance`) VALUES ( 
-            '{$_POST['name']}', '{$_POST['email']}', '{$_POST['password']}', '{$_POST['balance']}')");
+            '{$name}', '{$email}', '{$password}', '{$_POST['balance']}')");
 
         if($q){
             $message = 'Registered successfully';
@@ -35,13 +42,13 @@ if (isset($_POST['submit'])) {
     <title>A/C Management System</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -50,7 +57,7 @@ if (isset($_POST['submit'])) {
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <?php include_once('common/sidebar.php'); ?>
+        <?php include_once('../common/sidebar.php'); ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -58,7 +65,7 @@ if (isset($_POST['submit'])) {
             <!-- Main Content -->
             <div id="content">
 
-                 <?php include_once('common/header.php'); ?>
+                 <?php include_once('../common/header.php'); ?>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -69,7 +76,7 @@ if (isset($_POST['submit'])) {
                         <div class="col-lg-6">
                                     <div class="card position-relative">
                                         <div class="card-body"><?php echo $message; ?><div>
-                                        <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Add New Customer!</h1>
                                     </div>
                                     <form class="user" method="POST">
                                         <div class="form-group">
