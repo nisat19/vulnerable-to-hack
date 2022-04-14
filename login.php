@@ -1,5 +1,5 @@
 <?php
-require_once '../inc/config.php';
+require_once './inc/config.php';
 
 $message = "";
 if (isset($_POST['submit'])) {
@@ -16,9 +16,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['email'] = $_POST['email'];
             $_SESSION['language'] = $_POST['en'];
             // $bytes = bin2hex(random_bytes(20));
-            $pass = md5($_POST['password']);
-            setcookie("token", $pass, time() + (86400 * 30), "/");
-            header("Set-Cookie: token=".  $pass . "; httpOnly");
+            setcookie("token", md5($_POST['password']), time() + (86400 * 30), "/");
             setcookie("email", $_POST['email'], time() + (86400 * 30), "/");
             setcookie("language", "en", time() + (86400 * 30), "/");
             header("Location: index.php");
@@ -46,13 +44,13 @@ if (isset($_POST['submit'])) {
     <title>A/C Management System</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
