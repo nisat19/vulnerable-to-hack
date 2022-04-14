@@ -1,6 +1,15 @@
 <?php
-require_once '../inc/config.php';
+require_once './inc/config.php';
 header("Content-Security-Policy: default-src 'self'");
+// Prevents javascript XSS attacks aimed to steal the session ID
+ini_set('session.cookie_httponly', 1);
+
+// **PREVENTING SESSION FIXATION**
+// Session ID cannot be passed through URLs
+ini_set('session.use_only_cookies', 1);
+
+// Uses a secure connection (HTTPS) if possible
+ini_set('session.cookie_secure', 1);
 
 if (!$_SESSION['auth']) {
    header('Location: login.php');
@@ -8,23 +17,19 @@ if (!$_SESSION['auth']) {
 
 $message = "";
 
-if (isset($_POST['submit'])) {
-
-    $name = htmlentities($_POST['name']);
-    $email = htmlentities($_POST['email']);
-    $password = htmlentities($_POST['password']);
+if (isset($_POST['submit'])) { 
 
     try {
-        $q = $conn->query("INSERT INTO customers (`name`, `email`, `password`, `balance`) VALUES ( 
-            '{$name}', '{$email}', '{$password}', '{$_POST['balance']}')");
+        $q = $conn->query("UPDATE customers SET balance=balance-".$_POST['balance']." WHERE id=".$_POST['from_account']."");
 
         if($q){
-            $message = 'Registered successfully';
+            $q = $conn->query("UPDATE customers SET balance=balance+".$_POST['balance']." WHERE id=".$_POST['to_account']."");
+            $message = 'Balance transfered successfully';
         } else {
-            $message = 'Failed to register data';
+            $message = 'Failed to transfer';
         }
     } catch(Exception $e) {
-        $message = 'Failed to register ' . $e;
+        $message = 'Failed to transfer';
     }
 }
 ?>
@@ -42,13 +47,13 @@ if (isset($_POST['submit'])) {
     <title>A/C Management System</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -57,7 +62,7 @@ if (isset($_POST['submit'])) {
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <?php include_once('../common/sidebar.php'); ?>
+        <?php include_once('./common/sidebar.php'); ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -65,7 +70,7 @@ if (isset($_POST['submit'])) {
             <!-- Main Content -->
             <div id="content">
 
-                 <?php include_once('../common/header.php'); ?>
+                 <?php include_once('./common/header.php'); ?>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -76,33 +81,41 @@ if (isset($_POST['submit'])) {
                         <div class="col-lg-6">
                                     <div class="card position-relative">
                                         <div class="card-body"><?php echo $message; ?><div>
-                                        <h1 class="h4 text-gray-900 mb-4">Add New Customer!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Transfer Balance</h1>
                                     </div>
                                     <form class="user" method="POST">
-                                        <div class="form-group">
-                                            <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName"
-                                                placeholder="Full Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail"
-                                                placeholder="Email Address">
-                                        </div>
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="password" name="password" class="form-control form-control-user"
-                                                    id="exampleInputPassword" placeholder="Password">
+                                                <select class="form-control" name="from_account">
+                                                <?php 
+                                                    $data = $conn->query('SELECT * FROM customers')->fetchAll();    
+                                                    foreach($data as $item) {
+                                                ?>
+                                                    <option value="<?=$item['id']?>"><?=$item['name']?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                                </select>
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="password" name="repassword" class="form-control form-control-user"
-                                                    id="exampleRepeatPassword" placeholder="Repeat Password">
+                                                <select class="form-control" name="to_account">
+                                                <?php 
+                                                    $data = $conn->query('SELECT * FROM customers')->fetchAll();    
+                                                    foreach($data as $item) {
+                                                ?>
+                                                    <option value="<?=$item['id']?>"><?=$item['name']?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="number" name="balance" class="form-control form-control-user" id="exampleInputBalance"
+                                            <input type="number" required name="balance" class="form-control form-control-user" id="exampleInputBalance"
                                                 placeholder="A/C Balance">
                                         </div>
                                         <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
-                                            Register 
+                                            Transfer 
                                         </button>
                                     </form>
                                 </div>
